@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.cross_ni</groupId>
+	<artifactId>kafak-streams-examples</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>kafka-streams-examples</name>
+	<url>https://www.cross-ni.com/</url>
+	<description>
+		This project contains various examples and showcases of Kafka Stream library.
+	</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.release>17</maven.compiler.release>
+		<!-- Library versions -->
+		<version.connect-json>3.1.0</version.connect-json>
+		<version.javafaker>1.0.2</version.javafaker>
+		<version.json>20211205</version.json>
+		<version.kafka-streams>3.1.0</version.kafka-streams>
+		<version.log4j>1.2.17</version.log4j>
+		<version.lombok>1.18.22</version.lombok>
+		<version.slf4j>1.7.32</version.slf4j>
+	</properties>
+
+	<modules>
+		<module>password-mask</module>
+		<module>users-generator</module>
+		<module>names-count</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Internal -->
+			<dependency>
+				<groupId>com.cross_ni</groupId>
+				<artifactId>users-generator</artifactId>
+				<version>${version}</version>
+			</dependency>
+			<!-- Kafka & Kafka Streams -->
+			<dependency>
+				<groupId>org.apache.kafka</groupId>
+				<artifactId>kafka-streams</artifactId>
+				<version>${version.kafka-streams}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.kafka</groupId>
+				<artifactId>connect-json</artifactId>
+				<version>${version.connect-json}</version>
+			</dependency>
+			<!-- Logging -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${version.log4j}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${version.slf4j}</version>
+			</dependency>
+			<!-- JSON -->
+			<dependency>
+				<groupId>org.json</groupId>
+				<artifactId>json</artifactId>
+				<version>${version.json}</version>
+			</dependency>
+			<!-- Data generation -->
+			<dependency>
+				<groupId>com.github.javafaker</groupId>
+				<artifactId>javafaker</artifactId>
+				<version>${version.javafaker}</version>
+			</dependency>
+			<!-- Utility libraries -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${version.lombok}</version>
+				<scope>provided</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
+

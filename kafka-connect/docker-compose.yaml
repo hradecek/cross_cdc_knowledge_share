@@ -1,0 +1,42 @@
+version: "3"
+services:
+  zookeeper:
+    image: debezium/zookeeper:1.8
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+  kafka:
+    image: debezium/kafka:1.6
+    ports:
+      - "9092:9092"
+    links:
+      - zookeeper
+    environment:
+      - AUTO_CREATE_TOPICS_ENABLE=true
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+  connect:
+    image: debezium/connect:1.8
+    ports:
+      - "8083:8083"
+    links:
+      - kafka
+      - mongo
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=cross_connect_configs
+      - OFFSET_STORAGE_TOPIC=cross_connect_offsets
+      - STATUS_STORAGE_TOPIC=cross_connect_statuses
+      - KAFKA_CONNECT_PLUGINS_DIR=/kafka/connect/,/kafka/connect_external
+    volumes:
+      - ./connect-plugins/:/kafka/connect_external
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+

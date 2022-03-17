@@ -1,0 +1,19 @@
+{
+  "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+  "tasks.max": 1,
+  "connection.uri": "mongodb://mongo:27017/?directConnection=true",
+  "database": "cross_db",
+  "collection": "users",
+  "topics": "users",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "key.converter.schemas.enable": "false",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "value.converter.schemas.enable": false,
+  "mongodb.delete.on.null.values": "false",
+  "delete.on.null.values": "false",
+  "transforms":"hk",
+  "transforms.hk.type":"org.apache.kafka.connect.transforms.HoistField$Key",
+  "transforms.hk.field":"_id",
+  "writemodel.strategy": "com.mongodb.kafka.connect.sink.writemodel.strategy.ReplaceOneDefaultStrategy"
+}
+
