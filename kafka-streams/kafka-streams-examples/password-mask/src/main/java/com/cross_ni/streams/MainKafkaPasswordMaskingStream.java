@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.util.Properties;
 
+import static org.apache.kafka.common.serialization.Serdes.String;
+
 public class MainKafkaPasswordMaskingStream {
 
 	private static final String SOURCE_USERS_TOPIC = "users-source";
@@ -28,7 +30,7 @@ public class MainKafkaPasswordMaskingStream {
 
 		new KafkaUsersStream()
 				.usersStream(userStream(streamsBuilder))
-				.to("users", Produced.with(Serdes.String(), jsonSerde()).withName("sink-users"));
+				.to("users", Produced.with(String(), Json()).withName("sink-users"));
 
 		start(streamsBuilder.build());
 	}
@@ -49,10 +51,10 @@ public class MainKafkaPasswordMaskingStream {
 	}
 
 	private static KStream<String , JsonNode> userStream(StreamsBuilder streamsBuilder) {
-		return streamsBuilder.stream(SOURCE_USERS_TOPIC, Consumed.with(Serdes.String(), jsonSerde()).withName("source-users"));
+		return streamsBuilder.stream(SOURCE_USERS_TOPIC, Consumed.with(String(), Json()).withName("source-users"));
 	}
 
-	private static Serde<JsonNode> jsonSerde() {
+	private static Serde<JsonNode> Json() {
 		return Serdes.serdeFrom(new JsonSerializer(), new JsonDeserializer());
 	}
 
