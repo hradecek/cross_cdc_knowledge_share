@@ -28,13 +28,14 @@ public class MainKafkaPasswordMaskingStream {
 
 		new KafkaUsersStream()
 				.usersStream(userStream(streamsBuilder))
-				.to("users", Produced.with(Serdes.String(), jsonSerde()));
+				.to("users", Produced.with(Serdes.String(), jsonSerde()).withName("sink-users"));
 
 		start(streamsBuilder.build());
 	}
 
 	private static void start(Topology topology) {
 		final KafkaStreams kafkaStreams = new KafkaStreams(topology, properties());
+		System.out.println(topology.describe());
 		kafkaStreams.start();
 	}
 
@@ -48,7 +49,7 @@ public class MainKafkaPasswordMaskingStream {
 	}
 
 	private static KStream<String , JsonNode> userStream(StreamsBuilder streamsBuilder) {
-		return streamsBuilder.stream(SOURCE_USERS_TOPIC, Consumed.with(Serdes.String(), jsonSerde()));
+		return streamsBuilder.stream(SOURCE_USERS_TOPIC, Consumed.with(Serdes.String(), jsonSerde()).withName("source-users"));
 	}
 
 	private static Serde<JsonNode> jsonSerde() {

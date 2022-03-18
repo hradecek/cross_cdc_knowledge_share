@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Properties;
 
+// FIXME
 public class MainKafkaNamesCountsStream {
 
 	private static final String SOURCE_USERS_TOPIC = "users-source";
@@ -31,15 +32,16 @@ public class MainKafkaNamesCountsStream {
 		userStream(streamsBuilder)
 				.mapValues((key, userJson) -> userJson.get("name").asText(), Named.as("map-name"))
 				.groupBy((key, name) -> name, Grouped.with("group-by-name", Serdes.String(), Serdes.String()))
-				.count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("names-counts").withKeySerde(Serdes.String()).withValueSerde(Serdes.Long()))
+				.count(Named.as("aggregate-counts-by-name"), Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("names-counts").withKeySerde(Serdes.String()).withValueSerde(Serdes.Long()))
 				.toStream(Named.as("name-counts-to-stream"))
-				.to("user-name-counts", Produced.with(Serdes.String(), Serdes.Long()));
+				.to("user-name-counts", Produced.with(Serdes.String(), Serdes.Long()).withName("sink-users"));
 
 		start(streamsBuilder.build());
 	}
 
 	private static void start(Topology topology) {
 		final KafkaStreams kafkaStreams = new KafkaStreams(topology, properties());
+		System.out.println(topology.describe());
 		kafkaStreams.start();
 	}
 
