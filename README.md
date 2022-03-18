@@ -2,7 +2,7 @@
 
 ## Prequisites
  - docker & docker-compose
- - [kcat](https://github.com/edenhill/kcat) - build & install from source
+ - [kcat](https://github.com/edenhill/kcat) - build & install from source or use docker image
  - JDK 17
 
 ## Setup
